@@ -8,6 +8,7 @@ import { isSantanderExtrato, parseSantanderExtrato, readFileWithFallbackEncoding
 import { estimateB3Fees } from '../lib/fees'
 import { PageHeader } from './PageHeader'
 import { IconLedger, IconUpload } from './icons'
+import { useToast } from '../toastStore'
 
 export function TradeLog() {
   const trades = useStore((s) => s.trades)
@@ -28,6 +29,7 @@ export function TradeLog() {
   const [showFeeForm, setShowFeeForm] = useState(false)
   const [feeDate, setFeeDate] = useState('')
   const [feeTotal, setFeeTotal] = useState('')
+  const toast = useToast((s) => s.show)
 
   const strategies = useMemo(
     () => Array.from(new Set(trades.map((t) => t.strategy).filter(Boolean))) as string[],
@@ -43,8 +45,13 @@ export function TradeLog() {
   }, [trades, search, strategyFilter, sideFilter])
 
   function handleSave(data: Omit<Trade, 'id' | 'createdAt'>) {
-    if (editing) updateTrade(editing.id, data)
-    else addTrade(data)
+    if (editing) {
+      updateTrade(editing.id, data)
+      toast('Operação atualizada.')
+    } else {
+      addTrade(data)
+      toast('Operação adicionada.')
+    }
     setShowForm(false)
     setEditing(undefined)
   }
@@ -328,7 +335,10 @@ export function TradeLog() {
                     </button>
                     <button
                       onClick={() => {
-                        if (confirm('Excluir esta operação?')) deleteTrade(t.id)
+                        if (confirm('Excluir esta operação?')) {
+                          deleteTrade(t.id)
+                          toast('Operação excluída.', 'error')
+                        }
                       }}
                       className="text-negative/80 hover:text-negative text-[13px]"
                     >

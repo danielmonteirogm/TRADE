@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useStore } from '../store'
 import { format } from 'date-fns'
 import { PageHeader } from './PageHeader'
+import { useToast } from '../toastStore'
 
 export function Rules() {
   const rules = useStore((s) => s.rules)
@@ -10,6 +11,7 @@ export function Rules() {
   const removeRule = useStore((s) => s.removeRule)
   const toggleRuleCheck = useStore((s) => s.toggleRuleCheck)
   const [newRule, setNewRule] = useState('')
+  const toast = useToast((s) => s.show)
 
   const today = format(new Date(), 'yyyy-MM-dd')
   const checkedCount = rules.filter((r) => ruleChecks[`${today}:${r.id}`]).length
@@ -20,6 +22,12 @@ export function Rules() {
     if (!newRule.trim()) return
     addRule(newRule.trim())
     setNewRule('')
+    toast('Regra adicionada.')
+  }
+
+  function handleRemove(id: string) {
+    removeRule(id)
+    toast('Regra removida.', 'error')
   }
 
   return (
@@ -45,11 +53,11 @@ export function Rules() {
                 key={r.id}
                 className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-surface-2 cursor-pointer group transition-colors"
               >
-                <input type="checkbox" checked={checked} onChange={() => toggleRuleCheck(today, r.id)} className="w-4 h-4 accent-[#d9a441]" />
+                <input type="checkbox" checked={checked} onChange={() => toggleRuleCheck(today, r.id)} className="w-4 h-4 accent-[#1f4fb8]" />
                 <span className={`text-sm flex-1 ${checked ? 'text-ink-faint line-through' : 'text-ink'}`}>{r.text}</span>
                 <button
                   type="button"
-                  onClick={() => removeRule(r.id)}
+                  onClick={() => handleRemove(r.id)}
                   className="text-negative/80 hover:text-negative opacity-0 group-hover:opacity-100 text-xs transition-opacity"
                 >
                   remover

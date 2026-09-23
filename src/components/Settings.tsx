@@ -2,16 +2,19 @@ import { useState } from 'react'
 import { useStore } from '../store'
 import { downloadCsv, tradesToCsv } from '../lib/csv'
 import { PageHeader } from './PageHeader'
+import { useToast } from '../toastStore'
 
 export function Settings() {
   const account = useStore((s) => s.account)
   const setAccount = useStore((s) => s.setAccount)
   const trades = useStore((s) => s.trades)
   const [form, setForm] = useState(account)
+  const toast = useToast((s) => s.show)
 
   function submit(e: React.FormEvent) {
     e.preventDefault()
     setAccount(form)
+    toast('Configurações salvas.')
   }
 
   function clearAll() {
@@ -19,6 +22,11 @@ export function Settings() {
       localStorage.removeItem('trader-journal-storage')
       window.location.reload()
     }
+  }
+
+  function exportBackup() {
+    downloadCsv(`backup-trades-${Date.now()}.csv`, tradesToCsv(trades))
+    toast('Backup exportado.')
   }
 
   return (
@@ -65,7 +73,7 @@ export function Settings() {
         </p>
         <div className="flex gap-2">
           <button
-            onClick={() => downloadCsv(`backup-trades-${Date.now()}.csv`, tradesToCsv(trades))}
+            onClick={exportBackup}
             className="px-3 py-2 rounded-lg text-sm border border-border bg-surface-2 hover:bg-border text-ink-muted"
           >
             Exportar backup ({trades.length} operações)

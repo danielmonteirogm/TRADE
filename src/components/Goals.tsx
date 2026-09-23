@@ -3,6 +3,7 @@ import { useStore } from '../store'
 import { dailyPnlMap, fmtCurrency } from '../lib/calc'
 import { endOfMonth, endOfWeek, format, startOfMonth, startOfWeek } from 'date-fns'
 import { PageHeader } from './PageHeader'
+import { useToast } from '../toastStore'
 
 function ProgressBar({ value, target, tone }: { value: number; target: number; tone: 'positive' | 'negative' }) {
   const pct = target !== 0 ? Math.min(100, Math.max(0, (value / target) * 100)) : 0
@@ -22,6 +23,7 @@ export function Goals() {
   const trades = useStore((s) => s.trades)
   const account = useStore((s) => s.account)
   const [form, setForm] = useState(goals)
+  const toast = useToast((s) => s.show)
 
   const daily = useMemo(() => dailyPnlMap(trades), [trades])
 
@@ -50,6 +52,7 @@ export function Goals() {
   function save(e: React.FormEvent) {
     e.preventDefault()
     setGoals(form)
+    toast('Metas salvas.')
   }
 
   return (

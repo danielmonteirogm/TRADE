@@ -8,6 +8,7 @@ import { RiskCalculator } from './components/RiskCalculator'
 import { Goals } from './components/Goals'
 import { Rules } from './components/Rules'
 import { Settings } from './components/Settings'
+import { Toast } from './components/Toast'
 import { useStore } from './store'
 import { dailyPnlMap, fmtCurrency } from './lib/calc'
 import {
@@ -105,6 +106,7 @@ function App() {
         {tab === 'rules' && <Rules />}
         {tab === 'settings' && <Settings />}
       </main>
+      <Toast />
     </div>
   )
 }
