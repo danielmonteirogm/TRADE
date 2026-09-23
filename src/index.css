@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --color-bg: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef0f4;
+  --color-border: #dfe2e8;
+  --color-border-strong: #c6cad3;
+
+  --color-ink: #101828;
+  --color-ink-muted: #4b5468;
+  --color-ink-faint: #8a91a3;
+
+  --color-accent: #1f4fb8;
+  --color-accent-hover: #1a3f94;
+  --color-accent-fg: #ffffff;
+  --color-accent-soft: rgba(31, 79, 184, 0.08);
+
+  --color-positive: #0a7a40;
+  --color-positive-soft: rgba(10, 122, 64, 0.08);
+  --color-negative: #b3261e;
+  --color-negative-soft: rgba(179, 38, 30, 0.08);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tabular-nums, .font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-faint);
+}
+
+input, select, textarea {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+input::placeholder, textarea::placeholder {
+  color: var(--color-ink-faint);
+}
+
+button {
+  transition: transform 120ms ease, background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
